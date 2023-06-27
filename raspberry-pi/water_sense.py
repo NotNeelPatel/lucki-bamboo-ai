@@ -11,20 +11,25 @@ GOOD_WATER_LEVEL = 160
 SERVER_URL = "http://10.0.0.61:8000/"
 
 value = bus.read_byte(address)
-if value < GOOD_WATER_LEVEL:
+while True:
+	if value < GOOD_WATER_LEVEL:
 		print("Water is too low!, Requesting for an audio file")
 
-		# get request from server
-		subprocess.run(['rm', 'water.wav'])
+		# Get request from server
+		subprocess.run(["rm", "water.wav"])
 		print("Communicating with server...")
 		url = SERVER_URL + "water.wav"
-		wget_proc = subprocess.run(['wget', url])
+		wget_proc = subprocess.run(["wget", url])
 
-		# play the .wav file
+		# Play the .wav file
 		print("Success! Playing audio file...")
-		subprocess.run(['aplay','water.wav'])
+		subprocess.run(["aplay","water.wav"])
 
-		# request a new wav file to play
+		# Request a new wav file to play
 		print("Prompting AI to make a new monologue...")
 		url = SERVER_URL + "WATER"
-		wget_proc = subprocess.run(['curl', url] )
+		wget_proc = subprocess.run(["curl", url])
+		
+		# Runs every hour
+		time.sleep(3600)
+		
